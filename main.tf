@@ -10,7 +10,7 @@ resource "aws_s3_bucket" "test_bucket" {
   bucket = "terraform-github-actions-dangamboa-test"
   tags = {
     Name = "ManagedByTerraform"
-    }
+  }
 }
 
 #Output bucket name
