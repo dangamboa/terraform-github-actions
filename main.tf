@@ -35,7 +35,6 @@ resource "aws_lambda_function" "hello_world" {
 resource "aws_apigatewayv2_api" "http_api" {
   name          = "hello_world_dangamboa_api"
   protocol_type = "HTTP"
-
 }
 
 resource "aws_apigatewayv2_integration" "integration" {
@@ -52,14 +51,35 @@ resource "aws_apigatewayv2_route" "route" {
 
 resource "aws_apigatewayv2_stage" "stage" {
   api_id      = aws_apigatewayv2_api.http_api.id
-  name        = "hello_world_dangamboa_stage"
+  name        = "$default"
   auto_deploy = true
 }
 
-resource "aws_lambda_permission" "api_permission" {
+resource "aws_lambda_permission" "lambda_permission" {
   statement_id  = "AllowAPIGatewayInvoke"
   action        = "lambda:InvokeFunction"
   function_name = aws_lambda_function.hello_world.function_name
   principal     = "apigateway.amazonaws.com"
   source_arn    = "${aws_apigatewayv2_api.http_api.execution_arn}/*/*"
 }
+
+resource "aws_acm_certificate" "cert" {
+  domain_name       = var.custom_domain
+  validation_method = "DNS"
+}
+
+resource "aws_apigatewayv2_domain_name" "domain" {
+  domain_name = var.custom_domain
+  domain_name_configuration {
+    certificate_arn = aws_acm_certificate.cert.arn
+    endpoint_type   = "REGIONAL"
+    security_policy = "TLS_1_2"
+  }
+}
+
+resource "aws_apigatewayv2_api_mapping" "mapping" {
+  api_id      = aws_apigatewayv2_api.http_api.id
+  domain_name = aws_apigatewayv2_domain_name.domain.id
+  stage       = aws_apigatewayv2_stage.stage.name
+}
+

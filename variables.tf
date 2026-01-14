@@ -9,3 +9,9 @@ variable "s3_bucket" {
   description = "S3 bucket used for this project, must be created beforehand"
   default     = "terraform-github-actions-dangamboa"
 }
+
+variable "custom_domain" {
+  type        = string
+  description = "Custom domain for API Gateway"
+  default     = "helloworld.danielgamboafrayre.top"
+}
