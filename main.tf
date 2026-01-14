@@ -24,12 +24,12 @@ resource "aws_lambda_function" "hello_world" {
   handler       = "lambda.lambda_handler"
   role          = aws_iam_role.lambda_role.arn
 
-  #Save lambda code in s3 bucket
+  #Uses lambda package in s3 bucket
   s3_bucket = var.s3_bucket
   s3_key    = "lambda/hello_world_lambda.zip"
 
   #This will validate if lambda was modified to trigger terraform to update resource
-  source_code_hash = filebase64sha256("lambda.zip")
+  source_code_hash = filebase64sha256("lambda.py")
 }
 
 resource "aws_apigatewayv2_api" "http_api" {
@@ -68,9 +68,8 @@ resource "aws_acm_certificate" "cert" {
   validation_method = "DNS"
 }
 
-resource "aws_acm_certificate_validation" "cert_validation" {
-  certificate_arn = aws_acm_certificate.cert.arn
-}
+#TODO: Add DNS validation with cloudflare, currently is done manually
+
 
 resource "aws_apigatewayv2_domain_name" "domain" {
   domain_name = var.custom_domain
