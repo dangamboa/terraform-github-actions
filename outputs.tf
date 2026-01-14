@@ -5,3 +5,7 @@ output "hello_world_dangamboa_api_endpoint" {
 output "custom_domain_url" {
   value = var.custom_domain
 }
+
+output "api_gateway_target_url" {
+  value = aws_apigatewayv2_domain_name.domain.domain_name_configuration[0].target_domain_name
+}

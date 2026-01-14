@@ -68,6 +68,10 @@ resource "aws_acm_certificate" "cert" {
   validation_method = "DNS"
 }
 
+resource "aws_acm_certificate_validation" "cert_validation" {
+  certificate_arn = aws_acm_certificate.cert.arn
+}
+
 resource "aws_apigatewayv2_domain_name" "domain" {
   domain_name = var.custom_domain
   domain_name_configuration {
@@ -82,4 +86,3 @@ resource "aws_apigatewayv2_api_mapping" "mapping" {
   domain_name = aws_apigatewayv2_domain_name.domain.id
   stage       = aws_apigatewayv2_stage.stage.name
 }
-
