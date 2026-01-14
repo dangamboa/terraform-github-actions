@@ -1,4 +1,4 @@
-name: Terraform Destroy Pipeline
+name: Terraform Destroy
 
 on:
    workflow_dispatch:
@@ -21,6 +21,10 @@ jobs:
         with:
           role-to-assume: arn:aws:iam::${{ vars.AWS_ACCOUNT_ID }}:role/GitHubActionsTerraformRole
           aws-region: ${{ vars.AWS_REGION }}
+
+      - name: Zip Lambda
+        run: zip lambda.zip lambda.py
+
 
       - name: Setup Terraform
         uses: hashicorp/setup-terraform@v3
