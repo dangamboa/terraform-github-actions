@@ -26,7 +26,7 @@ resource "aws_lambda_function" "hello_world" {
 
   #Save lambda code in s3 bucket
   s3_bucket = var.s3_bucket
-  s3_key    = lambda / hello_world_lambda.zip
+  s3_key    = "lambda/hello_world_lambda.zip"
 
   #This will validate if lambda was modified to trigger terraform to update resource
   source_code_hash = filebase64sha256("lambda.zip")
