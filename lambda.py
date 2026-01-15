@@ -8,5 +8,5 @@ def lambda_handler(event, context):
         "headers": {
             "Content-Type": "text/plain; charset=utf-8"
         },
-        "body": "Hello world from lambda at " + time_utc
+        "body": "Test case 1, Hello world from lambda at " + time_utc
     }
